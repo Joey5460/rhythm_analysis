@@ -137,7 +137,7 @@ int main(int argc, char **argv)
         int idx = 0;
         if(down_sample(tmp, &vout1, orig_sr, sr)) {
                 samplecnt ++;
-                fifo_write(&fifo_ecg, &vout1, 1);
+                fifo_write(&fifo_ecg, &vout1, 1*sizeof(int));
                 int beatType, beatMatch;
                 long ltmp = vout1-s[0].adczero;
                 ltmp *= 200; ltmp /= s[0].gain;
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
                 idx = bt_i/sr;
                 if (0 != bdac_dly ) {
                     pBt_len[idx]++;
-                    fifo_write(&fifo_bt, &beatType, 1);
+                    fifo_write(&fifo_bt, &beatType, sizeof(int));
                 }
                 bt_i = ++bt_i%(win_sec*sr);
         }
@@ -153,23 +153,23 @@ int main(int argc, char **argv)
         double cm = 0.0;
 
         int size = win_sec*sr;
-        if(fifo_len(&fifo_ecg) >= sr*win_sec){
+        if(fifo_len(&fifo_ecg)/sizeof(int) >= sr*win_sec){
             int * win_data = (int*)malloc(win_sec*sr*sizeof(int));
             int * ds_data = (int*)malloc(win_sec*sr_ds*sizeof(int));
             
-            int len = fifo_len(&fifo_bt);
+            int len = fifo_len(&fifo_bt)/sizeof(int);
             int * p = (int*)calloc(len, sizeof(int));
            
             if (0 != len){
                //printf("bt_i:%d\n", bt_i);
-                fifo_read_steps(&fifo_bt, p, len, pBt_len[bt_i/sr]);
+                fifo_read_steps(&fifo_bt, p, len*sizeof(int), pBt_len[bt_i/sr]*sizeof(int));
                 //for (i = 0;i< len;i++) printf("%d ", p[i]);
                 //printf("\n");
 
             }
             pBt_len[bt_i/sr] = 0;
             
-            fifo_read_steps(&fifo_ecg, win_data, size, sr);
+            fifo_read_steps(&fifo_ecg, win_data, size*sizeof(int), sr*sizeof(int));
             filtering(win_data, size, sr);
             int i = 0;
             int ds_size = 0;

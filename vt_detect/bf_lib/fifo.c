@@ -3,13 +3,13 @@
 #include <string.h>
 
 //This initializes the FIFO structure with the given buffer and size
-void fifo_double_init(fifo_double_t * f, double * buffer, unsigned int size){
+void fifo_init(fifo_t * f, unsigned char * buffer, unsigned int size){
      f->in = f->out =0;
      f->size = size;
      f->buffer = buffer;
 }
 
-double * get_fifo_double_buf(fifo_double_t * f)
+double * get_fifo_buf(fifo_t * f)
 {
     return f ->buffer;
 }
@@ -25,7 +25,7 @@ double * get_fifo_double_buf(fifo_double_t * f)
  * Note that with only one concurrent reader and one concurrent
  * writer, you don't need extra locking to use these functions.
  */
-unsigned int fifo_double_read(fifo_double_t * fifo, double *buffer, unsigned int len)
+unsigned int fifo_read(fifo_t * fifo, unsigned char *buffer, unsigned int len)
 {
     
         unsigned int l;
@@ -41,10 +41,10 @@ unsigned int fifo_double_read(fifo_double_t * fifo, double *buffer, unsigned int
 
          /* first get the data from fifo->out until the end of the buffer */
          l = (int)fmin(len, fifo->size - (fifo->out & (fifo->size - 1)));
-         memcpy(buffer, fifo->buffer + (fifo->out & (fifo->size - 1)), l*sizeof(double));
+         memcpy(buffer, fifo->buffer + (fifo->out & (fifo->size - 1)), l);
 
          /* then get the rest (if any) from the beginning of the buffer */
-         memcpy(buffer + l, fifo->buffer, (len - l)*sizeof(double));
+         memcpy(buffer + l, fifo->buffer, (len - l));
 
          /*
           * Ensure that we remove the bytes from the kfifo -before-
@@ -57,7 +57,7 @@ unsigned int fifo_double_read(fifo_double_t * fifo, double *buffer, unsigned int
 
          return len;
 }
-unsigned int fifo_double_read_steps(fifo_double_t * fifo, double *buffer, unsigned int len,unsigned int steps)
+unsigned int fifo_read_steps(fifo_t * fifo, unsigned char *buffer, unsigned int len,unsigned int steps)
 {
     
         unsigned int l;
@@ -73,10 +73,10 @@ unsigned int fifo_double_read_steps(fifo_double_t * fifo, double *buffer, unsign
 
          /* first get the data from fifo->out until the end of the buffer */
          l = (int)fmin(len, fifo->size - (fifo->out & (fifo->size - 1)));
-         memcpy(buffer, fifo->buffer + (fifo->out & (fifo->size - 1)), l*sizeof(double));
+         memcpy(buffer, fifo->buffer + (fifo->out & (fifo->size - 1)), l);
 
          /* then get the rest (if any) from the beginning of the buffer */
-         memcpy(buffer + l, fifo->buffer, (len - l)*sizeof(double));
+         memcpy(buffer + l, fifo->buffer, (len - l));
 
          /*
           * Ensure that we remove the bytes from the kfifo -before-
@@ -102,7 +102,7 @@ unsigned int fifo_double_read_steps(fifo_double_t * fifo, double *buffer, unsign
  * Note that with only one concurrent reader and one concurrent
  * writer, you don't need extra locking to use these functions.
  */
-unsigned int fifo_double_write(fifo_double_t * fifo, const double * buffer, unsigned int len)
+unsigned int fifo_write(fifo_t * fifo, const unsigned char * buffer, unsigned int len)
 {
 
      unsigned int l;
@@ -118,10 +118,10 @@ unsigned int fifo_double_write(fifo_double_t * fifo, const double * buffer, unsi
 
      /* first put the data starting from fifo->in to buffer end */
      l = (int)fmin(len, fifo->size - (fifo->in & (fifo->size - 1)));
-     memcpy(fifo->buffer + (fifo->in & (fifo->size - 1)), buffer, l*sizeof(double));
+     memcpy(fifo->buffer + (fifo->in & (fifo->size - 1)), buffer, l);
 
      /* then put the rest (if any) at the beginning of the buffer */
-     memcpy(fifo->buffer, buffer + l, (len - l)*sizeof(double));
+     memcpy(fifo->buffer, buffer + l, (len - l));
 
      /*
       * Ensure that we add the bytes to the kfifo -before-
@@ -136,13 +136,13 @@ unsigned int fifo_double_write(fifo_double_t * fifo, const double * buffer, unsi
 }
 
 //This initializes the FIFO structure with the given buffer and size
-void fifo_init(fifo_t * f, int* buffer, unsigned int size){
+void int_fifo_init(int_fifo_t * f, int* buffer, unsigned int size){
      f->in = f->out =0;
      f->size = size;
      f->buffer = buffer;
 }
 
-int * get_fifo_buf(fifo_t * f)
+int * get_int_fifo_buf(int_fifo_t * f)
 {
     return f ->buffer;
 }
@@ -158,7 +158,7 @@ int * get_fifo_buf(fifo_t * f)
  * Note that with only one concurrent reader and one concurrent
  * writer, you don't need extra locking to use these functions.
  */
-unsigned int fifo_read(fifo_t * fifo, int *buffer, unsigned int len)
+unsigned int int_fifo_read(int_fifo_t * fifo, int *buffer, unsigned int len)
 {
         unsigned int l;
 
@@ -189,7 +189,7 @@ unsigned int fifo_read(fifo_t * fifo, int *buffer, unsigned int len)
 
          return len;
 }
-unsigned int fifo_read_steps(fifo_t * fifo, int *buffer, unsigned int len,unsigned int steps)
+unsigned int int_fifo_read_steps(int_fifo_t * fifo, int *buffer, unsigned int len,unsigned int steps)
 {
         unsigned int l;
 
@@ -233,7 +233,7 @@ unsigned int fifo_read_steps(fifo_t * fifo, int *buffer, unsigned int len,unsign
  * Note that with only one concurrent reader and one concurrent
  * writer, you don't need extra locking to use these functions.
  */
-unsigned int fifo_write(fifo_t * fifo, const int * buffer, unsigned int len)
+unsigned int int_fifo_write(int_fifo_t * fifo, const int * buffer, unsigned int len)
 {
      unsigned int l;
 
