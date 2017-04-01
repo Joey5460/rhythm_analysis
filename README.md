@@ -15,5 +15,6 @@ Otherwise, do this by typing:
 - Enter lib_swig, type python setup.py install
 - Enter vt_detect, type make, 
 - When making cmd gets successful, run db_test.sh.
+
   **NB**: When using setwfdb in db_test.sh, absolute path should be used. 
 - Enter the plot_ecg, run sen_spe.py
