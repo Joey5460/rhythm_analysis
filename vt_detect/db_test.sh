@@ -1,5 +1,6 @@
 #!/bin/bash
-db_path=/opt/physiobank/database/
+#db_path=/opt/physiobank/database/
+db_path=../
 db=mitdb
 #db=cudb
 #db=aha
