@@ -2,8 +2,8 @@
 How to use
 ----
 - Download wfdb, then complie and install
-ref: https://www.physionet.org/physiotools/wfdb-linux-quick-start.shtml.
 
+ref: https://www.physionet.org/physiotools/wfdb-linux-quick-start.shtml.
 **NB**: ./configure --prefix=/somewhere/else
 Typing:
   setenv LD_LIBRARY_PATH /usr/local/lib
