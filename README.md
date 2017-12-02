@@ -1,4 +1,4 @@
-# rhythm_analysis
+# Rhythm Analysis
 This is an algorithm for detecting VF and VT used by AED. 
 
 How to use
