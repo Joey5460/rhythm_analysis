@@ -1,6 +1,11 @@
 #!/bin/bash
 #db_path=/opt/physiobank/database/
-db_path=../
+pushd ..
+wfdb_path=$(pwd)
+popd
+LD_LIBRARY_PATH="${wfdb_path}/lib"
+export LD_LIBRARY_PATH
+db_path=${wfdb_path}
 db=mitdb
 #db=cudb
 #db=aha
@@ -9,7 +14,7 @@ w_len=9
 rm -rf detect.out
 for filename in ${db_path}/$db/*.dat
 do
-#    echo "$filename"
+    echo "$filename"
     extension="${filename##*.}"
     filename=$(basename ${filename})
     filename="$db/${filename%.*}"

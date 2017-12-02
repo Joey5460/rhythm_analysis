@@ -1,8 +1,8 @@
-IDIR = /usr/local/include
+IDIR = ../include
 CC = gcc
 CFLAGS = -Wall -I$(IDIR)
 
-LDIR = -L/usr/local/lib
+LDIR = -L../lib
 LIBS = -lwfdb -lm
 
 DEPS = bf_lib/bf_math.h bf_lib/fifo.h cmplx.h psr.h cpsd.h osea_lib/qrsdet.h
@@ -24,6 +24,9 @@ obj/%.o : %.c $(DEPS)
 ryth_analysis:$(OBJ)
 		$(CC) -o $@ $^ $(CFLAGS) $(LDIR) $(LIBS)
 
+.PHONY: all
+all:
+	mkdir -p obj
 .PHONY: clean
 clean:
 	rm -rf obj/*.o *~ ryth_analysis 
