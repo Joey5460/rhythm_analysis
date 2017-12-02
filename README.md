@@ -1,4 +1,5 @@
 # rhythm_analysis
+This is an algorithm for detecting VF and VT used by AED. 
 How to use
 ----
 - Download wfdb, then complie and install(ref: https://www.physionet.org/physiotools/wfdb-linux-quick-start.shtml)
