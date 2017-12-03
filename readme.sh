@@ -16,7 +16,7 @@ popd
 yum_cmd=""
 if [ -x "$(command -v apt)" ]; then
    echo "ubuntu-like"
-   yum_cmd="apt"
+   yum_cmd="apt-get"
 elif [ -x "$(command -v dnf)" ]; then
    echo "fedora-like"
    yum_cmd="dnf"
@@ -25,10 +25,13 @@ fi
 if ! [ -x "$(command -v swig)" ]; then
     sudo $yum_cmd install swig 
 fi
-sudo dnf install redhat-rpm-config
-sudo dnf install python2-devel
-sudo dnf install python3-devel
-sudo dnf install python2-tkinter
+sudo $yum_cmd install redhat-rpm-config
+sudo $yum_cmd install python2-devel
+sudo $yum_cnd install python3-devel
+sudo $yum_cmd install python2-tkinter
+
+pip install numpy
+pip install matplotlib
 
 pushd lib_swig
 python setup.py build_ext --inplace
@@ -36,6 +39,4 @@ popd
 pushd  vt_detect
 make
 popd
-pip install numpy
-pip install matplotlib
 
